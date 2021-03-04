@@ -1,0 +1,228 @@
+{
+	"info": {
+		"_postman_id": "0a6ce7b2-e41f-4dab-88e4-906067b994d8",
+		"name": "inmetrics",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Listar todos os colaboradores",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(202);\r",
+							"});\r",
+							"\r",
+							"//verifica se os funcionários com os ids 41,42 e 43 estão listados na resposta\r",
+							"pm.test(\"Verifica listagem funcionarios\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"41\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"42\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"43\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"followRedirects": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "automacao",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "inmetrics",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://inm-test-api.herokuapp.com/empregado/list_all",
+					"protocol": "https",
+					"host": [
+						"inm-test-api",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"empregado",
+						"list_all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": " Listar usuário cadastrados ",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(202);\r",
+							"});\r",
+							"\r",
+							"//verifica se o colaborador correspondente ao Id=41 foi retornado corretamente\r",
+							"pm.test(\"Funcionário Adicionado\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.nome).to.eql(\"Novo Empregado 01\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://inm-test-api.herokuapp.com/empregado/list/41",
+					"protocol": "https",
+					"host": [
+						"inm-test-api",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"empregado",
+						"list",
+						"41"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastrar usuário",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status \", function () {\r",
+							"    pm.response.to.have.status(202);\r",
+							"});\r",
+							"\r",
+							"//verifica se o usuário foi cadastrado\r",
+							"pm.test(\"Funcionário Adicionado\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.nome).to.eql(\"Empregado API 01\");\r",
+							"  pm.expect(responseJson.cpf).to.eql(\"503.873.000-07\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"admissao\": \"23/05/2021\",\r\n  \"cargo\": \"Analista\",\r\n  \"comissao\": \"0,00\",\r\n  \"cpf\": \"503.873.000-07\",\r\n  \"departamentoId\": 1,\r\n  \"nome\": \"Empregado API 01\",\r\n  \"salario\": \"4.050,00\",\r\n  \"sexo\": \"m\",\r\n  \"tipoContratacao\": \"clt\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://inm-test-api.herokuapp.com/empregado/cadastrar",
+					"protocol": "https",
+					"host": [
+						"inm-test-api",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"empregado",
+						"cadastrar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alterar usuário",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(202);\r",
+							"});\r",
+							"\r",
+							"//verifica se os parametros alterados foram editados no usuário correto\r",
+							"pm.test(\"Funcionário Alterado\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.cargo).to.eql(\"Analista Editado\");\r",
+							"  pm.expect(responseJson.salario).to.eql(\"5.000,00\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"departamentoId\": 1,\r\n    \"empregadoId\": 41,\r\n    \"nome\": \"Novo Empregado 01\",\r\n    \"sexo\": \"m\",\r\n    \"cpf\": \"388.163.430-44\",\r\n    \"cargo\": \"Analista Editado\",\r\n    \"admissao\": \"23/05/2021\",\r\n    \"salario\": \"5.000,00\",\r\n    \"comissao\": \"0,00\",\r\n    \"tipoContratacao\": \"clt\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://inm-test-api.herokuapp.com/empregado/alterar/41",
+					"protocol": "https",
+					"host": [
+						"inm-test-api",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"empregado",
+						"alterar",
+						"41"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "empregadoID",
+			"value": "40"
+		}
+	]
+}
